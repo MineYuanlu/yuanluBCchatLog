@@ -15,8 +15,13 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+
+import org.bstats.bungeecord.Metrics;
+import org.bstats.charts.SimplePie;
+import org.bstats.charts.SingleLineChart;
 
 import cn.mapland.yuanlu.bc.chatLog.Main.Filter.PlayerFilter;
 import cn.mapland.yuanlu.bc.chatLog.Main.Filter.ServerFilter;
@@ -367,6 +372,7 @@ public class Main extends Plugin implements Listener {
 		String	pn		= player.getDisplayName();
 		String	sn		= server.getName();
 		logger.log(new Msg(msg, time, pn, sn));
+		MSG_COUNT.getAndIncrement();
 	}
 
 	/**
@@ -458,8 +464,31 @@ public class Main extends Plugin implements Listener {
 		}
 	}
 
+	private static final AtomicInteger MSG_COUNT = new AtomicInteger();
+
+	/** */
+	private void bstats() {
+		// All you have to do is adding the following two lines in your onEnable method.
+		// You can find the plugin ids of your plugins on the page
+		// https://bstats.org/what-is-my-plugin-id
+		int		pluginId	= 10352;						// <-- Replace with the id of your plugin!
+		Metrics	metrics		= new Metrics(this, pluginId);
+
+		// Optional: Add custom charts
+
+		metrics.addCustomChart(new SingleLineChart("msgs", () -> MSG_COUNT.getAndSet(0)));
+		metrics.addCustomChart(new SimplePie("pls_count", () -> {
+			int count = 0;
+			for (Plugin pl : getProxy().getPluginManager().getPlugins()) {
+				if (pl.getDescription().getAuthor().contains("yuanlu")) count++;
+			}
+			return Integer.toString(count);
+		}));
+	}
+
 	@Override
 	public void onEnable() {
+		bstats();
 		loadConfig();
 		getProxy().getPluginManager().registerListener(this, this);// 注册监听器
 		getLogger().info("加载完成");
