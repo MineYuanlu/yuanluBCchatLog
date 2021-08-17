@@ -1,0 +1,5 @@
+name: yuanluBCchatLog
+main: cn.mapland.yuanlu.bc.chatLog.Main
+version: ${project.version}
+description: "yuanlu's bungee cord plugin: chat log"
+author: yuanlu
