@@ -3,19 +3,17 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>bid.yuanlu</groupId>
-	<artifactId>yuanluBCchatLog</artifactId>
-	<version>1.1.2</version><!-- -SNAPSHOT -->
+	<artifactId>yuanluchatlog</artifactId>
+	<version>velocity-1.1.2</version><!-- -SNAPSHOT -->
 	<name>yuanluBCchatLog</name>
-	<description>yuanlu's bungee cord plugin: chat log</description>
+	<description>yuanlu's velocity plugin: chat log</description>
 	<repositories>
-		<!-- This adds the Bstats Maven repository to the build -->
-		<!-- <repository> <id>bstats-repo</id> <url>https://repo.bstats.org/content/repositories/releases/</url> 
-			</repository> -->
-		<!-- This adds the Spigot Maven repository to the build -->
+
 		<repository>
-			<id>spigot-repo</id>
-			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+			<id>velocity</id>
+			<url>https://nexus.velocitypowered.com/repository/maven-public/</url>
 		</repository>
+
 	</repositories>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -36,20 +34,10 @@
 				</configuration>
 			</plugin>
 
-			<!-- 打包依赖 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.1.1</version>
-				<configuration>
-					<relocations>
-						<relocation>
-							<pattern>org.bstats</pattern>
-							<!-- Replace this with your package! -->
-							<shadedPattern>cn.mapland.yuanlu.bc.chatLog.bstats</shadedPattern>
-						</relocation>
-					</relocations>
-				</configuration>
+				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -57,6 +45,14 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
+							<minimizeJar>true</minimizeJar>
+							<relocations>
+								<relocation>
+									<pattern>org.bstats</pattern>
+									<!-- Replace this with your package! -->
+									<shadedPattern>cn.mapland.yuanlu.bc.chatLog.bstats</shadedPattern>
+								</relocation>
+							</relocations>
 							<filters>
 								<filter>
 									<artifact>*:*</artifact>
@@ -67,13 +63,6 @@
 									</excludes>
 								</filter>
 							</filters>
-							<artifactSet>
-								<includes>
-									<!-- <include>groupId:artifactId[[:type]:classifier]</include> -->
-									<!-- https://blog.csdn.net/yangguosb/article/details/80619481 -->
-								</includes>
-								<!--<excludes> <exclude></exclude> </excludes> -->
-							</artifactSet>
 						</configuration>
 					</execution>
 				</executions>
@@ -84,21 +73,30 @@
 		<!-- https://mvnrepository.com/artifact/org.bstats/bstats-bukkit -->
 		<dependency>
 			<groupId>org.bstats</groupId>
-			<artifactId>bstats-bungeecord</artifactId>
+			<artifactId>bstats-velocity</artifactId>
 			<version>2.2.1</version>
 			<scope>compile</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/net.md-5/bungeecord-api -->
+		<!-- https://velocitypowered.com/wiki/developers/creating-your-first-plugin/ -->
 		<dependency>
-			<groupId>net.md-5</groupId>
-			<artifactId>bungeecord-api</artifactId>
-			<version>1.16-R0.4</version>
+			<groupId>com.velocitypowered</groupId>
+			<artifactId>velocity-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.12</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<properties>
+		<java.version>1.8</java.version>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
+	<url>https://git.yuanlu.bid/yuanlu/yuanluBCchatLog/src/branch/velocity</url>
 </project>

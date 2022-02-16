@@ -1,0 +1,1 @@
+{"id":"yuanluchatlog","name":"元路聊天记录插件","version":"${project.version}","url":"https://git.yuanlu.bid/yuanlu/yuanluBCchatLog/src/branch/Velocity","authors":["yuanlu"],"main":"cn.mapland.yuanlu.bc.chatLog.Main"}

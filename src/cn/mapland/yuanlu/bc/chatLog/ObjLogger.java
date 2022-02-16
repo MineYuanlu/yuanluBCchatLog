@@ -3,6 +3,8 @@ package cn.mapland.yuanlu.bc.chatLog;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
+import lombok.NonNull;
+
 /**
  * 日志记录器<br>
  * 用于循环记录日志
@@ -60,7 +62,7 @@ public final class ObjLogger<E> {
 	 * @return 日志
 	 */
 	@SuppressWarnings("unchecked")
-	public synchronized <T> T[] read(T[] a) {
+	public synchronized <T> T[] read(@NonNull T[] a) {
 		int index = this.index;
 		if (logs[logs.length - 1] == null) {// 未记录满1次循环
 			if (a.length < index) return (T[]) Arrays.copyOf(logs, index, a.getClass());
