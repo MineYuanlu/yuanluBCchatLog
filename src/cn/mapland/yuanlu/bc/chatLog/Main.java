@@ -12,9 +12,11 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
+import org.bstats.charts.SimplePie;
+import org.bstats.charts.SingleLineChart;
 import org.bstats.velocity.Metrics;
 import org.slf4j.Logger;
 import org.yaml.snakeyaml.Yaml;
@@ -224,7 +226,7 @@ public class Main {
 	/** 去除颜色码 */
 	private static final Pattern		STRIP_COLOR_PATTERN	= Pattern.compile("(?i)" + String.valueOf('&') + "[0-9A-FK-OR]");
 	/** bstats: 聊天统计 */
-	private static final AtomicLong		MSG_COUNT			= new AtomicLong();
+	private static final AtomicInteger	MSG_COUNT			= new AtomicInteger();
 
 	/**
 	 * 清除颜色
@@ -245,6 +247,7 @@ public class Main {
 	@Deprecated
 	@Subscribe(order = PostOrder.LAST)
 	public void onProxyInitialization(ProxyInitializeEvent event) {
+		bstats();
 		Toml	toml		= config = loadConf("config");
 		int		log_num		= Tool.get("log-num", 50L, toml::getLong).intValue();
 		String	line_text	= Tool.getConf("line-text", "§7> [%1$s]%2$s§7: %3$s", String.class);
@@ -263,6 +266,21 @@ public class Main {
 		else chatLogger.setNewSize(log_num);
 
 		mb = new MsgBuilder(line_text, hover_text, date_format);
+	}
+
+	/** bstats */
+	private void bstats() {
+
+		Metrics metrics = metricsFactory.make(this, 14424);
+
+		metrics.addCustomChart(new SingleLineChart("logs_max", chatLogger::getNum));
+		metrics.addCustomChart(new SingleLineChart("msgs", () -> MSG_COUNT.getAndSet(0)));
+		metrics.addCustomChart(new SimplePie("pls_count", () -> {
+			val count = server.getPluginManager().getPlugins().stream()//
+					.filter(p -> p.getDescription().getAuthors().contains("yuanlu"))//
+					.count();
+			return Long.toString(count);
+		}));
 	}
 
 	/**

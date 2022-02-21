@@ -36,6 +36,11 @@ public final class ObjLogger<E> {
 		index			%= logs.length;
 	}
 
+	/** @return 日志最大数量 */
+	public int getNum() {
+		return logs.length;
+	}
+
 	/**
 	 * 读取日志
 	 * 
