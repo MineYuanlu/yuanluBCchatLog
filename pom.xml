@@ -93,6 +93,14 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+	<!-- omitted xml -->
+	<distributionManagement>
+		<repository>
+			<id>yl-yuanlu-mcsp-main</id>
+			<name>main</name>
+			<url>https://yl-yuanlu-maven.pkg.coding.net/repository/mcsp/main/</url>
+		</repository>
+	</distributionManagement>
 	<properties>
 		<java.version>1.8</java.version>
 		<maven.compiler.target>1.8</maven.compiler.target>
