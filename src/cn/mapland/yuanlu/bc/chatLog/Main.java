@@ -273,7 +273,7 @@ public class Main {
 
 		Metrics metrics = metricsFactory.make(this, 14424);
 
-		metrics.addCustomChart(new SingleLineChart("logs_max", chatLogger::getNum));
+		metrics.addCustomChart(new SingleLineChart("logs_max", () -> chatLogger == null ? 0 : chatLogger.getNum()));
 		metrics.addCustomChart(new SingleLineChart("msgs", () -> MSG_COUNT.getAndSet(0)));
 		metrics.addCustomChart(new SimplePie("pls_count", () -> {
 			val count = server.getPluginManager().getPlugins().stream()//
